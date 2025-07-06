@@ -1,0 +1,44 @@
+% Factorización LU seguida de un proceso de refinamiento iterativo
+% LU factorization followed by an iterative refinement process
+
+% Factorización LU sin pivotaje (solve_lu)
+    [L, U] = LUFact(A);
+
+    for k = 1:n
+        e_k = I(:, k);
+
+        % Paso 1: resolver L*y ≈ e_k con refinamiento
+        y0 = forwardsub(L, e_k);
+        res0 = e_k - L * y0;
+        v = forwardsub(L, res0);
+        y1 = y0 + v;
+        res1 = e_k - L * y1;
+
+        while norm(res1) < norm(res0)
+            y0 = y1;
+            res0 = res1;
+            v = forwardsub(L, res0);
+            y1 = y0 + v;
+            res1 = e_k - L * y1;
+        endwhile
+
+        % Paso 2: resolver U*x ≈ y1 con refinamiento
+        x0 = backsub(U, y1);
+        res0 = y1 - U * x0;
+        v = backsub(U, res0);
+        x1 = x0 + v;
+        res1 = y1 - U * x1;
+
+        while norm(res1) < norm(res0)
+            x0 = x1;
+            res0 = res1;
+            v = backsub(U, res0);
+            x1 = x0 + v;
+            res1 = y1 - U * x1;
+        endwhile
+
+        % Guardar la columna k de la inversa
+        invA(:, k) = x1;
+    endfor
+
+endfunction
