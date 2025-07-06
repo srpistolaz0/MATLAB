@@ -1,0 +1,26 @@
+% Forwardsub
+% Sistemas triangulres inferiores
+% For lower triangular systems
+
+function x = forwardsub(L, b)
+  % FORWARDSUB: Resuelve el sistema lineal L*x = b
+  % n: número de filas (o columnas) de L, y tamaño del vector b
+  n = length(b);
+
+  % Inicializamos el vector solución x con ceros
+  x = zeros(n, 1);
+
+  % Recorremos las filas de 1 a n (forma "forward" o hacia adelante).
+  for i = 1:n
+      % El cálculo de x(i) se basa en la ecuación:
+      %
+      %    L(i, i) * x(i) + sum(L(i, j)* x(j), j=1..i-1 ) = b(i)
+      %
+      % Primero restamos de b(i) el producto L(i,1:i-1)*x(1:i-1),
+      % que corresponde a la parte ya conocida, y luego dividimos
+      % entre L(i, i) para aislar x(i).
+
+      x(i) = b(i) - L(i, 1:i-1)*x(1:i-1);
+      x(i) = x(i) / L(i, i);
+  endfor
+endfunction
