@@ -1,0 +1,59 @@
+% Gaussian elimination with complete pivoting
+% Gauss Pivotaje Maximal
+
+function [A,b] = GaussPCT(A,b)
+  [m, n] = size(A);
+
+  if m ~= n
+    error('La matriz A debe ser cuadrada.');
+  endif
+
+  % Vector que almacena el orden de las columnas
+  w = 1:n;  % Inicialmente w es [1, 2, ..., n]
+
+  % Eliminar variables para triangular la matriz
+  for k = 1:n-1
+    % Buscar el pivote máximo en la submatriz A(k:m, k:n)
+    [max_val, row_pivot] = max(abs(A(k:m, k)));  % Pivote en columna
+    row_pivot = row_pivot + k - 1;
+
+    if abs(max_val) == 0
+      error('La matriz A es singular.');
+    endif
+
+    % Intercambiar filas (si el pivote no está en la fila k)
+    if row_pivot ~= k
+      A([k, row_pivot], :) = A([row_pivot, k], :);  % Intercambio de filas
+      b([k, row_pivot], 1) = b([row_pivot, k], 1);  % Intercambio en b
+    endif
+
+    % Buscar el pivote máximo en la submatriz restante (intercambiar columnas)
+    [~, col_pivot] = max(abs(A(k, k:n)));
+    col_pivot = col_pivot + k - 1;
+
+    if col_pivot ~= k
+      A(:, [k, col_pivot]) = A(:, [col_pivot, k]);  % Intercambio de columnas
+      w([k, col_pivot]) = w([col_pivot, k]);  % Actualizar el vector w
+    endif
+
+    % Eliminar los términos por debajo del pivote
+    for i = k+1:m
+      mult = A(i,k) / A(k,k);
+      A(i,k:n) = A(i,k:n) - mult * A(k,k:n);
+      b(i,1) = b(i,1) - mult * b(k,1);
+    endfor
+  endfor
+
+  % Mostrar el vector w después de los intercambios de columnas
+  disp('Vector w después de los intercambios de columnas:');
+  disp(w);
+
+  % Resolución por sustitución hacia atrás
+  x = zeros(n,1);
+  for i = n:-1:1
+    x(i) = (b(i,1) - A(i,i+1:n) * x(i+1:n)) / A(i,i);
+  endfor
+
+  % Reordenar x según el vector w
+  x = x(w);
+endfunction
