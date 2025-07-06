@@ -1,0 +1,25 @@
+% Backsub
+% Para sistemas triangulares superiores 
+% For upper triangular systems
+
+function x = backsub(U, b)
+  % BACKSUB: Resuelve el sistema lineal U*x = b
+
+  % n: número de filas (o columnas) de U, y tamaño del vector b
+  n = length(b);
+
+  % Inicializamos el vector solución x con ceros
+  x = zeros(n, 1);
+
+  for i = n:-1:1
+     % El cálculo de x(i) se basa en la ecuación:
+      %
+      %    U(i, i) * x(i) + sum(U(i, j)* x(j), j=i+1..n ) = b(i)
+      %
+      % Primero restamos de b(i) el producto U(i, i+1:end)*x(i+1:end),
+      % que corresponde a la parte ya conocida, y luego dividimos
+      % entre U(i, i) para aislar x(i).
+
+      x(i) = b(i) - U(i, i+1:end)*x(i+1:end);
+      x(i) = x(i) / U(i, i);
+  endfor
