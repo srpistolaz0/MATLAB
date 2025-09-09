@@ -2,15 +2,19 @@
 
 Toolbox that collects **direct methods** for solving linear systems and inverting matrices, including Gaussian elimination (with several pivoting strategies) and LU factorization (with and without pivoting, plus iterative refinement).
 
-src/
-├── solve_backsub.m                  ← backward-substitution                          | Sustitución hacia atrás
-├── solve_forwardsub.m               ← forward-substitution                           | Sustitución hacia adelante
-├── solve_gauss.m                    ← Gaussian elimination (no pivot)                | Gauss sin pivoteo
-├── solve_gauss_pivot_column.m       ← Gaussian elimination with column pivoting      | Gauss con pivoteo por columnas
-├── solve_gauss_pivot_complete.m     ← Gaussian elimination with complete pivoting    | Gauss con pivoteo completo
-├── solve_lu.m                       ← LU factorization (no pivot)                    | LU sin pivoteo
-├── solve_lu_pivot_complete.m        ← LU factorization with complete pivoting        | LU con pivoteo completo
-└── solve_lu_iterative_refinement.m  ← LU + iterative refinement                      | LU + refinamiento iterativo 
+---
+
+## Content / Contenido
+
+- **solve_backsub.m** → Sustitución hacia atrás.
+- **solve_forwardsub.m** → Sustitución hacia adelante.
+- **solve_gauss.m** → Gauss sin pivoteo.
+- **solve_gauss_pivot_column.m** → Gauss con pivoteo por columnas.
+- **solve_gauss_pivot_complete.m** → Gauss con pivoteo completo.
+- **solve_lu.m** → LU sin pivoteo.
+- **solve_lu_pivot_complete.m** → LU con pivoteo completo.
+- **solve_lu_iterative_refinement.m** → LU con refinamiento iterativo.
+
 
 Quick Start
 % Example / Ejemplo:
